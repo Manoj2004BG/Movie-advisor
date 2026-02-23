@@ -45,7 +45,7 @@ router.get('/trending', async (req, res) => {
         const data = await fetchFromTMDB('/trending/movie/week');
         res.json(data);
     } catch (error) {
-        res.status(500).json({ message: 'Failed to fetch trending movies' });
+        res.status(500).json({ message: 'Failed to fetch trending movies', error: error.message });
     }
 });
 
@@ -60,7 +60,7 @@ router.get('/search', async (req, res) => {
         const data = await fetchFromTMDB('/search/movie', { query });
         res.json(data);
     } catch (error) {
-        res.status(500).json({ message: 'Failed to search movies' });
+        res.status(500).json({ message: 'Failed to search movies', error: error.message });
     }
 });
 
