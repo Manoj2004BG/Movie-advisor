@@ -51,8 +51,6 @@ export default function Header() {
                         </Link>
                     </div>
 
-                    <Link to="/" className="text-sm font-medium text-zinc-300 hover:text-white transition-colors">Explore</Link>
-
                     {user ? (
                         <div className="flex items-center gap-4">
                             <span className="text-sm text-zinc-400 flex items-center gap-2">
