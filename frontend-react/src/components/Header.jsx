@@ -21,7 +21,7 @@ export default function Header() {
             <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
                 <Link to="/" className="flex items-center gap-2 text-rose-500 hover:text-rose-400 transition-colors">
                     <Film className="w-6 h-6" />
-                    <span className="text-xl font-bold tracking-tight text-white sm:inline hidden">Book & Movie Advisor</span>
+                    <span className="text-xl font-bold tracking-tight text-white sm:inline hidden">Movie/Book Advisor</span>
                     <span className="text-xl font-bold tracking-tight text-white sm:hidden inline">Advisor</span>
                 </Link>
                 <div className="flex-1 max-w-md mx-4 hidden md:flex items-center relative group">
