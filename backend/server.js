@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import authRoutes from './routes/authRoutes.js';
 import movieRoutes from './routes/movieRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
+import bookRoutes from './routes/bookRoutes.js';
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(morgan('dev'));
 app.use('/api/auth', authRoutes);
 app.use('/api/movies', movieRoutes);
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/books', bookRoutes);
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/cinematch')
