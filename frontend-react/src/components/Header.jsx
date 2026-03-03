@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Search, Film, User, LogOut, Clapperboard, Library } from 'lucide-react';
+import { Search, Sparkles, User, LogOut, Clapperboard, Library } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 
 export default function Header() {
@@ -19,9 +19,13 @@ export default function Header() {
     return (
         <header className="sticky top-0 z-50 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800">
             <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-                <Link to="/" className="flex items-center gap-2 text-rose-500 hover:text-rose-400 transition-colors">
-                    <Film className="w-6 h-6" />
-                    <span className="text-xl font-bold tracking-tight text-white">Movie Advisor</span>
+                <Link to="/" className="flex items-center gap-3 group transition-all">
+                    <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-indigo-600 shadow-xl shadow-rose-500/20 group-hover:shadow-rose-500/40 transition-all group-hover:scale-105 group-hover:rotate-3 border border-white/10">
+                        <Sparkles className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-400 group-hover:to-zinc-300 transition-colors">
+                        MovieAdvisor
+                    </span>
                 </Link>
                 <div className="flex-1 max-w-md mx-4 hidden md:flex items-center relative group">
                     <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
