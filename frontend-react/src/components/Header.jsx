@@ -53,9 +53,9 @@ export default function Header() {
 
                     {user ? (
                         <div className="flex items-center gap-4">
-                            <span className="text-sm text-zinc-400 flex items-center gap-2">
+                            <Link to="/profile" className="text-sm text-zinc-400 flex items-center gap-2 hover:text-rose-400 transition-colors">
                                 <User className="w-4 h-4" /> {user.username}
-                            </span>
+                            </Link>
                             <button
                                 onClick={logout}
                                 className="text-sm font-medium bg-zinc-800 text-white px-3 py-2 rounded-full hover:bg-zinc-700 transition-colors flex items-center gap-2"
