@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Search, Sparkles, User, LogOut, Clapperboard, Library } from 'lucide-react';
+import { Search, Film, User, LogOut, Clapperboard, Library } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 
 export default function Header() {
