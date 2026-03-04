@@ -57,6 +57,24 @@ router.get('/search', async (req, res) => {
     }
 });
 
+// Discover books by genre (subject)
+router.get('/discover', async (req, res) => {
+    try {
+        const { genre } = req.query;
+        if (!genre) {
+            return res.status(400).json({ message: 'Genre is required' });
+        }
+
+        // Open Library supports subject: queries which match quite well to genres
+        const response = await axios.get(`https://openlibrary.org/search.json?subject=${encodeURIComponent(genre.toLowerCase())}&limit=20`);
+        const docs = response.data.docs || [];
+        res.json({ items: mapOpenLibraryToStandard(docs) });
+    } catch (error) {
+        console.error('Open Library Genre Discover Error:', error.message);
+        res.status(500).json({ message: 'Failed to discover books by genre', error: error.message });
+    }
+});
+
 // Get book details
 router.get('/:id', async (req, res) => {
     try {

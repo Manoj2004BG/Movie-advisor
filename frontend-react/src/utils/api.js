@@ -33,11 +33,13 @@ export const registerUser = (userData) => api.post('/auth/register', userData);
 // Movies endpoints
 export const getTrendingMovies = () => api.get('/movies/trending');
 export const searchMovies = (query) => api.get(`/movies/search?query=${query}`);
+export const discoverMoviesByGenre = (genre) => api.get(`/movies/discover?genre=${genre}`);
 export const getMovieDetails = (id) => api.get(`/movies/${id}`);
 
 // Books endpoints
 export const getTrendingBooks = () => api.get('/books/trending');
 export const searchBooks = (query) => api.get(`/books/search?query=${query}`);
+export const discoverBooksByGenre = (genre) => api.get(`/books/discover?genre=${genre}`);
 export const getBookDetails = (id) => api.get(`/books/${id}`);
 
 // Reviews endpoints

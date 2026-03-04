@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Star, Heart, Loader2, BookOpen, Film } from 'lucide-react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { getTrendingMovies, searchMovies, getTrendingBooks, searchBooks } from '../utils/api';
+import { getTrendingMovies, searchMovies, getTrendingBooks, searchBooks, discoverMoviesByGenre, discoverBooksByGenre } from '../utils/api';
 
 export default function Home() {
     const [searchParams] = useSearchParams();
     const searchQuery = searchParams.get('search');
+    const genreQuery = searchParams.get('genre');
 
     // Default to Movies, but sync tightly with the ?type URL parameter from the header
     const typeParam = searchParams.get('type');
@@ -23,6 +24,8 @@ export default function Home() {
                 if (activeTab === 'Movies') {
                     if (searchQuery) {
                         response = await searchMovies(searchQuery);
+                    } else if (genreQuery) {
+                        response = await discoverMoviesByGenre(genreQuery);
                     } else {
                         response = await getTrendingMovies();
                     }
@@ -30,10 +33,12 @@ export default function Home() {
                 } else {
                     if (searchQuery) {
                         response = await searchBooks(searchQuery);
+                    } else if (genreQuery) {
+                        response = await discoverBooksByGenre(genreQuery);
                     } else {
                         response = await getTrendingBooks();
                     }
-                    // Google Books returns an array of items
+                    // Google/OpenLibrary maps return an array of items
                     setItems(response.data.items ? response.data.items.slice(0, 15) : []);
                 }
                 setError('');
@@ -45,7 +50,7 @@ export default function Home() {
         };
 
         fetchItems();
-    }, [searchQuery, activeTab]);
+    }, [searchQuery, genreQuery, activeTab]);
 
     const getMovieUrl = (path) => path ? `https://image.tmdb.org/t/p/w500${path}` : 'https://via.placeholder.com/500x750?text=No+Poster';
 
@@ -140,9 +145,32 @@ export default function Home() {
             <section>
                 <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
                     <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-                        {searchQuery ? `Search Results for "${searchQuery}" in ${activeTab}` : `Trending ${activeTab}`}
+                        {searchQuery ? `Search Results for "${searchQuery}" in ${activeTab}`
+                            : genreQuery ? `${genreQuery.charAt(0).toUpperCase() + genreQuery.slice(1)} ${activeTab}`
+                                : `Trending ${activeTab}`}
                     </h2>
                 </div>
+
+                {/* Genre Filter Pills */}
+                {!searchQuery && (
+                    <div className="flex gap-3 overflow-x-auto pb-4 mb-6 scrollbar-hide">
+                        <Link
+                            to={`/?type=${activeTab.toLowerCase()}`}
+                            className={`px-5 py-2 rounded-full whitespace-nowrap text-sm font-semibold transition-colors border ${!genreQuery ? 'bg-rose-500 text-white border-rose-500 shadow-lg shadow-rose-500/20' : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-rose-400 hover:border-rose-500/50'}`}
+                        >
+                            All {activeTab}
+                        </Link>
+                        {['Action', 'Comedy', 'Drama', 'Fantasy', 'Horror', 'Romance', 'SciFi', 'Thriller'].map(genre => (
+                            <Link
+                                key={genre}
+                                to={`/?type=${activeTab.toLowerCase()}&genre=${genre.toLowerCase()}`}
+                                className={`px-5 py-2 rounded-full whitespace-nowrap text-sm font-semibold transition-colors border ${genreQuery?.toLowerCase() === genre.toLowerCase() ? 'bg-rose-500 text-white border-rose-500 shadow-lg shadow-rose-500/20' : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-rose-400 hover:border-rose-500/50'}`}
+                            >
+                                {genre}
+                            </Link>
+                        ))}
+                    </div>
+                )}
 
                 {items.length === 0 ? (
                     <div className="py-12 text-center text-zinc-500">

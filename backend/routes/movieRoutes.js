@@ -64,6 +64,38 @@ router.get('/search', async (req, res) => {
     }
 });
 
+// TMDB Genre ID Map
+const MOVIE_GENRES = {
+    'action': 28,
+    'comedy': 35,
+    'drama': 18,
+    'fantasy': 14,
+    'horror': 27,
+    'romance': 10749,
+    'scifi': 878,
+    'thriller': 53
+};
+
+// Discover movies by genre
+router.get('/discover', async (req, res) => {
+    try {
+        const { genre } = req.query;
+        const genreId = MOVIE_GENRES[genre?.toLowerCase()];
+
+        if (!genreId) {
+            return res.status(400).json({ message: 'Valid genre is required' });
+        }
+
+        const data = await fetchFromTMDB('/discover/movie', {
+            with_genres: genreId,
+            sort_by: 'popularity.desc'
+        });
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to discover movies by genre', error: error.message });
+    }
+});
+
 // Get movie details
 router.get('/:id', async (req, res) => {
     try {
