@@ -20,7 +20,7 @@ export default function Header() {
         <header className="sticky top-0 z-50 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800">
             <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
                 <Link to="/" className="flex items-center gap-2 text-rose-500 hover:text-rose-400 transition-colors">
-                    <Film className="w-6 h-6" />
+                    <Clapperboard className="w-6 h-6" />
                     <span className="text-xl font-bold tracking-tight text-white sm:inline hidden">Movie/Book Advisor</span>
                     <span className="text-xl font-bold tracking-tight text-white sm:hidden inline">Advisor</span>
                 </Link>
