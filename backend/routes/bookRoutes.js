@@ -18,7 +18,14 @@ const fetchFromGoogleBooks = async (endpoint = '', queryParams = {}) => {
         const response = await axios.get(`${GOOGLE_BOOKS_BASE_URL}${endpoint}`, { params });
         return response.data;
     } catch (error) {
-        console.error(`Google Books API Error (${endpoint}):`, error.message);
+        const status = error.response?.status;
+        console.error(`Google Books API Error (${endpoint}): Request failed with status code ${status || error.message}`);
+
+        if (status === 429) {
+            const rateLimitError = new Error('Google Books rate limit exceeded. Please add a valid GOOGLE_BOOKS_API_KEY to your .env file.');
+            rateLimitError.status = 429;
+            throw rateLimitError;
+        }
         throw error;
     }
 };
@@ -34,6 +41,9 @@ router.get('/trending', async (req, res) => {
         });
         res.json(data);
     } catch (error) {
+        if (error.status === 429) {
+            return res.status(429).json({ message: error.message });
+        }
         res.status(500).json({ message: 'Failed to fetch trending books', error: error.message });
     }
 });
@@ -49,6 +59,9 @@ router.get('/search', async (req, res) => {
         const data = await fetchFromGoogleBooks('', { q: query, maxResults: 20 });
         res.json(data);
     } catch (error) {
+        if (error.status === 429) {
+            return res.status(429).json({ message: error.message });
+        }
         res.status(500).json({ message: 'Failed to search books', error: error.message });
     }
 });
@@ -60,6 +73,9 @@ router.get('/:id', async (req, res) => {
         const data = await fetchFromGoogleBooks(`/${id}`);
         res.json(data);
     } catch (error) {
+        if (error.status === 429) {
+            return res.status(429).json({ message: error.message });
+        }
         console.error(`Error fetching details for book ${req.params.id}:`, error.message);
         res.status(500).json({ message: 'Failed to fetch book details', error: error.message });
     }

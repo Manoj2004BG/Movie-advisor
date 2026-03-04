@@ -38,7 +38,7 @@ export default function Home() {
                 }
                 setError('');
             } catch (err) {
-                setError(`Failed to fetch ${activeTab.toLowerCase()}. Please try again later.`);
+                setError(err.response?.data?.message || `Failed to fetch ${activeTab.toLowerCase()}. Please try again later.`);
             } finally {
                 setIsLoading(false);
             }
